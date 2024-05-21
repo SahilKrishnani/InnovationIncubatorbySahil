@@ -1,0 +1,98 @@
+// Functions and Scope
+
+// Function Declaration
+function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet("Alice")); // Output: Hello, Alice!
+
+// Function Expression
+const square = function (number) {
+  return number * number;
+};
+
+console.log(square(4)); // Output: 16
+
+// Arrow Function
+const multiply = (a, b) => a * b;
+
+console.log(multiply(3, 4)); // Output: 12
+
+// Function with Default Parameters
+function greetWithTime(name, timeOfDay = "day") {
+  return `Good ${timeOfDay}, ${name}!`;
+}
+
+console.log(greetWithTime("Bob")); // Output: Good day, Bob!
+console.log(greetWithTime("Bob", "morning")); // Output: Good morning, Bob!
+
+// Immediately Invoked Function Expression (IIFE)
+(function () {
+  console.log("This is an IIFE");
+})();
+
+// Function with Rest Parameters
+function sum(...numbers) {
+  return numbers.reduce((total, number) => total + number, 0);
+}
+
+console.log(sum(1, 2, 3, 4)); // Output: 10
+
+// Function Scope and Variable Scope
+
+// Global Scope
+let globalVar = "I'm a global variable";
+
+function checkScope() {
+  // Local Scope
+  let localVar = "I'm a local variable";
+  
+  console.log(globalVar); // Output: I'm a global variable
+  console.log(localVar); // Output: I'm a local variable
+  
+  // Nested Function
+  function nestedFunction() {
+    let nestedVar = "I'm a nested variable";
+    console.log(globalVar); // Output: I'm a global variable
+    console.log(localVar); // Output: I'm a local variable
+    console.log(nestedVar); // Output: I'm a nested variable
+  }
+  
+  nestedFunction();
+  
+  // Trying to access nestedVar here would cause an error
+  // console.log(nestedVar); // Uncaught ReferenceError: nestedVar is not defined
+}
+
+checkScope();
+
+// Trying to access localVar here would cause an error
+// console.log(localVar); // Uncaught ReferenceError: localVar is not defined
+
+// Block Scope with let and const
+if (true) {
+  let blockVar = "I'm a block-scoped variable";
+  const blockConst = "I'm a block-scoped constant";
+  
+  console.log(blockVar); // Output: I'm a block-scoped variable
+  console.log(blockConst); // Output: I'm a block-scoped constant
+}
+
+// Trying to access block-scoped variables outside the block
+// console.log(blockVar); // Uncaught ReferenceError: blockVar is not defined
+// console.log(blockConst); // Uncaught ReferenceError: blockConst is not defined
+
+// Function Hoisting
+console.log(hoistedFunction()); // Output: This function is hoisted
+
+function hoistedFunction() {
+  return "This function is hoisted";
+}
+
+// Function Expressions are not hoisted
+// console.log(notHoistedFunction()); // Uncaught ReferenceError: Cannot access 'notHoistedFunction' before initialization
+
+const notHoistedFunction = function () {
+  return "This function is not hoisted";
+};
