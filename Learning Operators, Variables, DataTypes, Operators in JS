@@ -1,0 +1,93 @@
+// Variables and Data Types
+let name = "John Doe"; // String
+let age = 30; // Number
+let isEmployed = true; // Boolean
+let height; // Undefined
+let weight = null; // Null
+
+console.log("Name: ", name);
+console.log("Age: ", age);
+console.log("Employed: ", isEmployed);
+console.log("Height: ", height);
+console.log("Weight: ", weight);
+
+// Using 'const' for constant values
+const pi = 3.14159;
+console.log("Value of Pi: ", pi);
+
+// Operators
+
+// Arithmetic Operators
+let a = 10;
+let b = 5;
+
+console.log("Addition: ", a + b); // 15
+console.log("Subtraction: ", a - b); // 5
+console.log("Multiplication: ", a * b); // 50
+console.log("Division: ", a / b); // 2
+console.log("Modulus: ", a % b); // 0
+console.log("Exponentiation: ", a ** b); // 100000
+
+// Assignment Operators
+let c = 20;
+c += 5; // c = c + 5
+console.log("c after += 5: ", c); // 25
+
+c -= 5; // c = c - 5
+console.log("c after -= 5: ", c); // 20
+
+c *= 2; // c = c * 2
+console.log("c after *= 2: ", c); // 40
+
+c /= 4; // c = c / 4
+console.log("c after /= 4: ", c); // 10
+
+c %= 3; // c = c % 3
+console.log("c after %= 3: ", c); // 1
+
+// Comparison Operators
+let x = 10;
+let y = 20;
+
+console.log("x == y: ", x == y); // false
+console.log("x != y: ", x != y); // true
+console.log("x === 10: ", x === 10); // true
+console.log("x !== '10': ", x !== '10'); // true
+console.log("x > y: ", x > y); // false
+console.log("x < y: ", x < y); // true
+console.log("x >= 10: ", x >= 10); // true
+console.log("x <= 20: ", x <= 20); // true
+
+// Logical Operators
+let isAdult = age >= 18;
+let hasID = true;
+
+console.log("isAdult && hasID: ", isAdult && hasID); // true
+console.log("isAdult || hasID: ", isAdult || hasID); // true
+console.log("!isAdult: ", !isAdult); // false
+
+// String Concatenation using +
+let firstName = "John";
+let lastName = "Doe";
+let fullName = firstName + " " + lastName;
+
+console.log("Full Name: ", fullName);
+
+// Template Literals
+let greeting = `Hello, my name is ${name} and I am ${age} years old.`;
+console.log(greeting);
+
+// Type Coercion
+console.log("5" + 5); // "55"
+console.log("5" - 3); // 2
+console.log(true + 1); // 2
+console.log(false + 1); // 1
+console.log("5" * "2"); // 10
+
+// typeof operator
+console.log("Type of name: ", typeof name); // string
+console.log("Type of age: ", typeof age); // number
+console.log("Type of isEmployed: ", typeof isEmployed); // boolean
+console.log("Type of height: ", typeof height); // undefined
+console.log("Type of weight: ", typeof weight); // object (null is considered an object in JavaScript)
+console.log("Type of pi: ", typeof pi); // number
