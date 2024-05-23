@@ -1,0 +1,29 @@
+package.json is a file that holds metadata about your Node.js project. 
+It includes important information such as the project name, version, dependencies, 
+scripts, and more. Here is an example of a simple package.json file:
+
+{
+  "name": "my-node-project",
+  "version": "1.0.0",
+  "description": "A sample Node.js project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
+
+name: The name of your project.
+version: The version of your project.
+description: A brief description of your project.
+main: The entry point of your application (typically index.js).
+scripts: Scripts you can run using npm run <script-name>. For example, npm start will run node index.js.
+author: The author's name.
+license: The license under which your project is distributed.
+dependencies: A list of npm packages your project depends on.
+
