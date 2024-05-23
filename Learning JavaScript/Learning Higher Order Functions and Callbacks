@@ -1,0 +1,111 @@
+// Higher-Order Functions and Callbacks
+
+// A higher-order function is a function that takes another function as an argument or returns a function as a result.
+
+// Example of a higher-order function that takes a callback
+function processArray(arr, callback) {
+  const result = [];
+  for (let i = 0; i < arr.length; i++) {
+    result.push(callback(arr[i]));
+  }
+  return result;
+}
+
+// Callback function to double the values
+function double(num) {
+  return num * 2;
+}
+
+// Using the higher-order function with the callback
+let numbers = [1, 2, 3, 4, 5];
+let doubledNumbers = processArray(numbers, double);
+
+console.log("Original Numbers: ", numbers); // [1, 2, 3, 4, 5]
+console.log("Doubled Numbers: ", doubledNumbers); // [2, 4, 6, 8, 10]
+
+// Another example of a callback function to square the values
+function square(num) {
+  return num * num;
+}
+
+let squaredNumbers = processArray(numbers, square);
+
+console.log("Squared Numbers: ", squaredNumbers); // [1, 4, 9, 16, 25]
+
+// Built-in higher-order functions in JavaScript: forEach, map, filter, reduce
+
+// forEach
+numbers.forEach(num => {
+  console.log(`Number: ${num}`);
+});
+
+// map
+let tripledNumbers = numbers.map(num => num * 3);
+console.log("Tripled Numbers: ", tripledNumbers); // [3, 6, 9, 12, 15]
+
+// filter
+let evenNumbers = numbers.filter(num => num % 2 === 0);
+console.log("Even Numbers: ", evenNumbers); // [2, 4]
+
+// reduce
+let sumOfNumbers = numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+console.log("Sum of Numbers: ", sumOfNumbers); // 15
+
+// Using higher-order functions with objects
+let students = [
+  { name: "Alice", score: 85 },
+  { name: "Bob", score: 92 },
+  { name: "Charlie", score: 78 },
+  { name: "David", score: 90 }
+];
+
+// Map to get student names
+let studentNames = students.map(student => student.name);
+console.log("Student Names: ", studentNames); // ["Alice", "Bob", "Charlie", "David"]
+
+// Filter to get students with scores above 80
+let highScorers = students.filter(student => student.score > 80);
+console.log("High Scorers: ", highScorers);
+
+// Reduce to get the total score
+let totalScore = students.reduce((total, student) => total + student.score, 0);
+console.log("Total Score: ", totalScore); // 345
+
+// Custom higher-order function that returns a function
+function createMultiplier(multiplier) {
+  return function (num) {
+    return num * multiplier;
+  };
+}
+
+let doubleFunc = createMultiplier(2);
+let tripleFunc = createMultiplier(3);
+
+console.log(doubleFunc(5)); // 10
+console.log(tripleFunc(5)); // 15
+
+// Higher-order function with asynchronous callback
+function fetchData(callback) {
+  setTimeout(() => {
+    const data = "Some data";
+    callback(data);
+  }, 1000);
+}
+
+fetchData((data) => {
+  console.log("Fetched Data: ", data);
+});
+
+// Using Promises with higher-order functions
+function fetchDataPromise() {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      const data = "Promise data";
+      resolve(data);
+    }, 1000);
+  });
+}
+
+fetchDataPromise().then(data => {
+  console.log("Fetched Data with Promise: ", data);
+});
