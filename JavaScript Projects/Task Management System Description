@@ -1,0 +1,10 @@
+Task Management System
+
+The goal of this project is to build a task management system where users can:
+
+Add new tasks with a description and priority level.
+View all tasks.
+Update task descriptions and priority levels.
+Delete tasks.
+Fetch additional task-related information from an external API (simulated).
+The project demonstrates fundamental JavaScript concepts and is structured in a way that could be useful for an AI Engineer Intern role by emphasizing data handling and asynchronous operations.
