@@ -1,0 +1,134 @@
+// Objects and Arrays
+
+// Objects
+
+// Creating an object using object literal notation
+let person = {
+  firstName: "John",
+  lastName: "Doe",
+  age: 30,
+  isEmployed: true,
+  address: {
+    street: "123 Main St",
+    city: "New York",
+    country: "USA"
+  },
+  greet: function() {
+    return `Hello, my name is ${this.firstName} ${this.lastName}`;
+  }
+};
+
+console.log("Person Object: ", person);
+console.log("First Name: ", person.firstName); // Accessing properties
+console.log("Last Name: ", person["lastName"]); // Another way to access properties
+console.log(person.greet()); // Calling a method
+console.log("City: ", person.address.city); // Accessing nested object property
+
+// Adding a new property
+person.middleName = "Michael";
+console.log("Middle Name: ", person.middleName);
+
+// Deleting a property
+delete person.isEmployed;
+console.log("Is Employed: ", person.isEmployed); // undefined
+
+// Checking if a property exists
+console.log("age" in person); // true
+console.log("isEmployed" in person); // false
+
+// Arrays
+
+// Creating an array
+let fruits = ["Apple", "Banana", "Cherry"];
+
+console.log("Fruits Array: ", fruits);
+console.log("First Fruit: ", fruits[0]); // Accessing elements
+
+// Modifying elements
+fruits[1] = "Blueberry";
+console.log("Modified Fruits Array: ", fruits);
+
+// Array length
+console.log("Number of Fruits: ", fruits.length);
+
+// Adding elements
+fruits.push("Durian"); // Adds to the end
+console.log("After push: ", fruits);
+
+fruits.unshift("Avocado"); // Adds to the beginning
+console.log("After unshift: ", fruits);
+
+// Removing elements
+let removedFruit = fruits.pop(); // Removes from the end
+console.log("Removed Fruit: ", removedFruit);
+console.log("After pop: ", fruits);
+
+removedFruit = fruits.shift(); // Removes from the beginning
+console.log("Removed Fruit: ", removedFruit);
+console.log("After shift: ", fruits);
+
+// Iterating over arrays
+for (let i = 0; i < fruits.length; i++) {
+  console.log(`Fruit at index ${i}: ${fruits[i]}`);
+}
+
+// Using forEach
+fruits.forEach((fruit, index) => {
+  console.log(`Fruit at index ${index}: ${fruit}`);
+});
+
+// Array methods
+
+// map
+let upperCaseFruits = fruits.map(fruit => fruit.toUpperCase());
+console.log("Upper Case Fruits: ", upperCaseFruits);
+
+// filter
+let longNameFruits = fruits.filter(fruit => fruit.length > 5);
+console.log("Long Name Fruits: ", longNameFruits);
+
+// find
+let cherryFruit = fruits.find(fruit => fruit === "Cherry");
+console.log("Found Fruit: ", cherryFruit);
+
+// reduce
+let fruitString = fruits.reduce((acc, fruit) => acc + fruit + " ", "");
+console.log("Fruit String: ", fruitString);
+
+// Combining Objects and Arrays
+
+let people = [
+  {
+    firstName: "John",
+    lastName: "Doe",
+    age: 30
+  },
+  {
+    firstName: "Jane",
+    lastName: "Doe",
+    age: 25
+  },
+  {
+    firstName: "Jim",
+    lastName: "Beam",
+    age: 35
+  }
+];
+
+people.forEach(person => {
+  console.log(`${person.firstName} ${person.lastName} is ${person.age} years old.`);
+});
+
+// Array of objects
+let books = [
+  { title: "Book One", author: "Author One", pages: 200 },
+  { title: "Book Two", author: "Author Two", pages: 150 },
+  { title: "Book Three", author: "Author Three", pages: 300 }
+];
+
+console.log("Books: ", books);
+
+// Accessing objects in arrays
+books.forEach(book => {
+  console.log(`${book.title} by ${book.author} has ${book.pages} pages.`);
+});
