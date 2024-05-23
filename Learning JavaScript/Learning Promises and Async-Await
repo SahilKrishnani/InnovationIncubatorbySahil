@@ -1,0 +1,132 @@
+// Promises and Async/Await
+
+// Creating a Promise
+let promise = new Promise((resolve, reject) => {
+  let success = true; // Change this to false to see the rejection case
+  setTimeout(() => {
+    if (success) {
+      resolve("The operation was successful!");
+    } else {
+      reject("The operation failed.");
+    }
+  }, 2000);
+});
+
+// Handling a Promise with then and catch
+promise
+  .then((message) => {
+    console.log("Promise resolved: ", message);
+  })
+  .catch((error) => {
+    console.log("Promise rejected: ", error);
+  });
+
+// Chaining Promises
+let promiseChain = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(10);
+  }, 1000);
+});
+
+promiseChain
+  .then((result) => {
+    console.log("First result: ", result); // 10
+    return result * 2;
+  })
+  .then((result) => {
+    console.log("Second result: ", result); // 20
+    return result * 2;
+  })
+  .then((result) => {
+    console.log("Third result: ", result); // 40
+  })
+  .catch((error) => {
+    console.log("Error: ", error);
+  });
+
+// Async/Await
+
+// Simulating a function that returns a promise
+function fetchData() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      const data = "Fetched Data";
+      resolve(data);
+    }, 1500);
+  });
+}
+
+// Using async/await to handle promises
+async function fetchDataAsync() {
+  try {
+    console.log("Fetching data...");
+    const data = await fetchData();
+    console.log("Data: ", data);
+  } catch (error) {
+    console.log("Error: ", error);
+  }
+}
+
+fetchDataAsync();
+
+// Using async/await with multiple promises
+async function fetchMultipleData() {
+  function fetchData1() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve("Data from fetchData1");
+      }, 1000);
+    });
+  }
+
+  function fetchData2() {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve("Data from fetchData2");
+      }, 2000);
+    });
+  }
+
+  try {
+    console.log("Fetching multiple data...");
+    const [data1, data2] = await Promise.all([fetchData1(), fetchData2()]);
+    console.log("Data1: ", data1);
+    console.log("Data2: ", data2);
+  } catch (error) {
+    console.log("Error: ", error);
+  }
+}
+
+fetchMultipleData();
+
+// Using async/await with async function returning value directly
+async function directAsyncFunction() {
+  return "Direct Value from Async Function";
+}
+
+directAsyncFunction().then((value) => {
+  console.log("Direct Value: ", value);
+});
+
+// Error handling in async/await
+async function asyncFunctionWithError() {
+  try {
+    throw new Error("Something went wrong");
+  } catch (error) {
+    console.log("Caught Error: ", error.message);
+  }
+}
+
+asyncFunctionWithError();
+
+// Waiting for multiple promises with Promise.all
+async function waitForMultiplePromises() {
+  const promise1 = new Promise((resolve) => setTimeout(() => resolve("First Promise"), 1000));
+  const promise2 = new Promise((resolve) => setTimeout(() => resolve("Second Promise"), 1500));
+  const promise3 = new Promise((resolve) => setTimeout(() => resolve("Third Promise"), 2000));
+
+  const results = await Promise.all([promise1, promise2, promise3]);
+  console.log("Results from Promise.all: ", results);
+}
+
+waitForMultiplePromises();
