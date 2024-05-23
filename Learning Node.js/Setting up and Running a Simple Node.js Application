@@ -1,0 +1,21 @@
+Install Express:
+In your project directory, run npm install express to install Express and save it as a dependency in package.json.
+npm install express
+
+Create index.js:
+Create an index.js file in your project directory and add the following code to set up a basic Express server.
+const express = require('express');
+const app = express();
+const port = 3000;
+
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
+
+app.listen(port, () => {
+  console.log(`Server is running at http://localhost:${port}`);
+});
+
+Run the Application:
+Use npm start to run the application (as defined in the scripts section of package.json)
+npm start
