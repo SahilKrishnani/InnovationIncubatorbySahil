@@ -1,0 +1,26 @@
+To set up a Node.js project, follow these steps:
+
+Install Node.js: Download and install Node.js from the official Node.js website. This will also install npm (Node Package Manager) automatically.
+
+Initialize a new Node.js project:
+
+Create a new directory for your project.
+Open a terminal and navigate to your project directory.
+Run npm init to initialize a new Node.js project. This command will create a package.json file and prompt you to enter various details about your project.
+
+mkdir my-node-project
+cd my-node-project
+npm init
+
+During the npm init process, you'll be asked to provide:
+
+Package name
+Version
+Description
+Entry point (default is index.js)
+Test command
+Git repository
+Keywords
+Author
+License
+After filling in the information, npm will generate a package.json file based on your inputs.
