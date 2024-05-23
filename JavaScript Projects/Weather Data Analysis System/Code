@@ -1,0 +1,103 @@
+// Weather Data Analysis System
+
+// WeatherData class to store weather information
+class WeatherData {
+  constructor(city, temperature, humidity, description) {
+    this.city = city;
+    this.temperature = temperature;
+    this.humidity = humidity;
+    this.description = description;
+  }
+}
+
+// WeatherManager class
+class WeatherManager {
+  constructor() {
+    this.weatherData = [];
+  }
+
+  // Fetch weather data from an API
+  async fetchWeatherData(city) {
+    const apiKey = 'YOUR_API_KEY_HERE'; // Replace with your API key
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
+
+    try {
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error(`Error fetching weather data for ${city}`);
+      }
+      const data = await response.json();
+      const weather = new WeatherData(
+        data.name,
+        data.main.temp,
+        data.main.humidity,
+        data.weather[0].description
+      );
+      this.weatherData.push(weather);
+      return weather;
+    } catch (error) {
+      throw new Error(`Failed to fetch weather data: ${error.message}`);
+    }
+  }
+
+  // View all stored weather data
+  viewWeatherData() {
+    return this.weatherData;
+  }
+
+  // Find the highest temperature from the stored data
+  findHighestTemperature() {
+    if (this.weatherData.length === 0) {
+      throw new Error('No weather data available');
+    }
+    return this.weatherData.reduce((max, weather) => weather.temperature > max ? weather.temperature : max, this.weatherData[0].temperature);
+  }
+
+  // Find the lowest temperature from the stored data
+  findLowestTemperature() {
+    if (this.weatherData.length === 0) {
+      throw new Error('No weather data available');
+    }
+    return this.weatherData.reduce((min, weather) => weather.temperature < min ? weather.temperature : min, this.weatherData[0].temperature);
+  }
+
+  // Calculate the average temperature from the stored data
+  calculateAverageTemperature() {
+    if (this.weatherData.length === 0) {
+      throw new Error('No weather data available');
+    }
+    const totalTemp = this.weatherData.reduce((total, weather) => total + weather.temperature, 0);
+    return totalTemp / this.weatherData.length;
+  }
+}
+
+// Example usage of WeatherManager
+const weatherManager = new WeatherManager();
+
+// Fetch weather data for multiple cities
+(async () => {
+  try {
+    const cities = ["New York", "London", "Tokyo", "Sydney"];
+    for (const city of cities) {
+      const weather = await weatherManager.fetchWeatherData(city);
+      console.log(`Fetched Weather Data for ${city}:`, weather);
+    }
+
+    // View all stored weather data
+    console.log("All Weather Data:", weatherManager.viewWeatherData());
+
+    // Find the highest temperature
+    const highestTemp = weatherManager.findHighestTemperature();
+    console.log("Highest Temperature:", highestTemp);
+
+    // Find the lowest temperature
+    const lowestTemp = weatherManager.findLowestTemperature();
+    console.log("Lowest Temperature:", lowestTemp);
+
+    // Calculate the average temperature
+    const averageTemp = weatherManager.calculateAverageTemperature();
+    console.log("Average Temperature:", averageTemp);
+  } catch (error) {
+    console.error("Error:", error.message);
+  }
+})();
