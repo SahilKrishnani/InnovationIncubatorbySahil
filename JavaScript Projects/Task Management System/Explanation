@@ -1,0 +1,8 @@
+Task Object Constructor: The Task class defines the structure of a task with id, description, and priority properties.
+TaskManager Class: The TaskManager class handles task management operations:
+addTask(description, priority): Adds a new task.
+viewTasks(): Returns all tasks.
+updateTask(id, newDescription, newPriority): Updates a task's description and priority.
+deleteTask(id): Deletes a task by ID.
+fetchTaskInfo(taskId): Simulates fetching additional information for a task from an external API using async/await.
+Example Usage: Demonstrates adding, updating, deleting tasks, and fetching additional information using the TaskManager class.
