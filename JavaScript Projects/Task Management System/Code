@@ -1,0 +1,106 @@
+// Task Management System
+
+// Task object constructor
+class Task {
+  constructor(id, description, priority) {
+    this.id = id;
+    this.description = description;
+    this.priority = priority;
+  }
+}
+
+// Task Manager class
+class TaskManager {
+  constructor() {
+    this.tasks = [];
+    this.nextId = 1;
+  }
+
+  // Add a new task
+  addTask(description, priority) {
+    const newTask = new Task(this.nextId++, description, priority);
+    this.tasks.push(newTask);
+    return newTask;
+  }
+
+  // View all tasks
+  viewTasks() {
+    return this.tasks;
+  }
+
+  // Update a task
+  updateTask(id, newDescription, newPriority) {
+    const task = this.tasks.find(task => task.id === id);
+    if (task) {
+      task.description = newDescription;
+      task.priority = newPriority;
+      return task;
+    }
+    return null;
+  }
+
+  // Delete a task
+  deleteTask(id) {
+    const taskIndex = this.tasks.findIndex(task => task.id === id);
+    if (taskIndex !== -1) {
+      const removedTask = this.tasks.splice(taskIndex, 1);
+      return removedTask[0];
+    }
+    return null;
+  }
+
+  // Fetch additional task-related information from a simulated API
+  async fetchTaskInfo(taskId) {
+    const task = this.tasks.find(task => task.id === taskId);
+    if (!task) {
+      throw new Error("Task not found");
+    }
+
+    // Simulate API call
+    const fetchData = () => {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          resolve(`Additional information for task ${taskId}`);
+        }, 1000);
+      });
+    };
+
+    try {
+      const info = await fetchData();
+      return info;
+    } catch (error) {
+      throw new Error("Failed to fetch task information");
+    }
+  }
+}
+
+// Example usage of TaskManager
+const taskManager = new TaskManager();
+
+// Add tasks
+const task1 = taskManager.addTask("Implement login feature", "High");
+const task2 = taskManager.addTask("Fix bugs in signup page", "Medium");
+console.log("Added Tasks:", taskManager.viewTasks());
+
+// Update a task
+const updatedTask = taskManager.updateTask(1, "Implement OAuth login feature", "High");
+console.log("Updated Task:", updatedTask);
+
+// Delete a task
+const deletedTask = taskManager.deleteTask(2);
+console.log("Deleted Task:", deletedTask);
+
+// View all tasks after deletion
+console.log("All Tasks:", taskManager.viewTasks());
+
+// Fetch additional task information
+taskManager.fetchTaskInfo(1)
+  .then(info => {
+    console.log("Task Info:", info);
+  })
+  .catch(error => {
+    console.log("Error:", error.message);
+  });
+
+// Example output of remaining tasks
+console.log("Final Task List:", taskManager.viewTasks());
