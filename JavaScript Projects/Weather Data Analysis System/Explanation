@@ -1,0 +1,9 @@
+WeatherData Class: Defines the structure of weather data with properties for city, temperature, humidity, and description.
+WeatherManager Class: Manages weather data and includes methods to:
+fetchWeatherData(city): Fetch weather data from the OpenWeatherMap API for a given city using async/await.
+viewWeatherData(): Return all stored weather data.
+findHighestTemperature(): Find the highest temperature from the stored weather data.
+findLowestTemperature(): Find the lowest temperature from the stored weather data.
+calculateAverageTemperature(): Calculate the average temperature from the stored weather data.
+Example Usage: Demonstrates fetching weather data for multiple cities, viewing stored data, finding the highest and lowest temperatures, and calculating the average temperature using the WeatherManager class.
+This project showcases key JavaScript concepts relevant to an AI Engineer Intern role, such as interacting with external APIs, handling JSON data, and performing basic data analysis. Make sure to replace 'YOUR_API_KEY_HERE' with your actual OpenWeatherMap API key.
