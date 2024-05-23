@@ -1,0 +1,7 @@
+The goal of this project is to build a weather data analysis system where users can:
+
+Fetch current weather data for a given city from an external API.
+Store the fetched data.
+Perform basic data analysis such as finding the highest and lowest temperatures from the stored data.
+Calculate the average temperature from the stored data.
+The project demonstrates fundamental JavaScript concepts and is structured to showcase API interaction, data manipulation, and basic analysis, which are relevant skills for an AI Engineer Intern.
