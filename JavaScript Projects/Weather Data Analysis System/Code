@@ -1,4 +1,4 @@
-// Weather Data Analysis System
+// Main Weather Data Analysis System
 
 // WeatherData class to store weather information
 class WeatherData {
