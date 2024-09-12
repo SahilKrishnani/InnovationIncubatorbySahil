@@ -1,0 +1,159 @@
+ import boto3
+ import json
+import uuid
+
+# Global session ID that will persist throughout the interaction
+session_id = None
+
+def lambda_handler(event, context):
+    global session_id
+    
+    # Check if session_id is provided in the event and is_external is true
+    if event.get('is_external', False) == True:
+        session_id = event.get('session_id')
+    else:
+        # Generate a session ID if not provided and if it's the first interaction
+        if session_id is None:
+            session_id = str(uuid.uuid4())
+
+    # Initialize the Bedrock client
+    bedrock = boto3.client(
+        service_name='bedrock-agent-runtime',
+        region_name='us-east-1'
+    )
+    if event.get('is_external', False) == True:
+        best_transcription = event['text']
+        
+        try:
+            # Call the agent and get the response
+            response = bedrock.invoke_agent(
+                agentId='Your Agent ID',
+                agentAliasId='Your Agent Alias ID',
+                inputText=best_transcription,
+                sessionId=session_id,
+                enableTrace=True
+            )
+            print('response', response)
+            
+            # Initialize the variable to store the completion
+            completion = ‘’
+            
+            # Extract the response chunks and decode them
+            for event in response.get("completion", []):
+                if 'chunk' in event:
+                    chunk = event["chunk"]
+                    completion += chunk["bytes"].decode()
+    
+            print('completion', completion)
+            
+            response_data = {
+                "sessionState": {
+                    "dialogAction": {
+                        "type": "ElicitIntent"
+                    },
+                    "intent": {
+                        "name": current_intent,
+                        "state": "Fulfilled"
+                    }
+                },
+                "messages": [
+                    {
+                        "contentType": "PlainText",
+                        "content": completion
+                    }
+                ]
+            }
+    
+        except Exception as e:
+            return {
+                'statusCode': 500,
+                'body': json.dumps({
+                    'error': str(e)
+                })
+            }
+    
+    if event.get('is_external', False) == False:
+        # Extract the current intent from sessionState
+        current_intent = event.get('sessionState', {}).get('intent', {}).get('name', '')
+
+        # If sessionState is not clear, fallback to the first interpretation
+        if not current_intent:
+            current_intent = event.get('interpretations', [{}])[0].get('intent', {}).get('name', '')
+
+        print(f"Current intent: {current_intent}")
+
+        highest_confidence = 0
+        best_transcription = ""
+
+        # Iterate over the transcriptions list
+        for transcription in event.get('transcriptions', []):
+            if transcription['transcriptionConfidence'] > highest_confidence:
+                highest_confidence = transcription['transcriptionConfidence']
+                best_transcription = transcription['rawTranscription']
+                print('best_transcription', best_transcription)
+
+        # Check if best_transcription is empty
+        if not best_transcription:
+            return {
+                "sessionState": {
+                    "dialogAction": {
+                        "type": "ElicitIntent"
+                    },
+                    "intent": {
+                        "name": current_intent,
+                        "state": "Fulfilled"
+                    }
+                },
+                "messages": []
+            }
+
+        try:
+            # Call the agent and get the response
+            response = bedrock.invoke_agent(
+                agentId='Your agent ID',
+                agentAliasId='Your Agent Alias ID',
+                inputText=best_transcription,
+                sessionId=session_id,
+                enableTrace=True
+            )
+            print('response', response)
+            
+            # Initialize the variable to store the completion
+            completion = ''
+            
+            # Extract the response chunks and decode them
+            for event in response.get("completion", []):
+                if 'chunk' in event:
+                    chunk = event["chunk"]
+                    completion += chunk["bytes"].decode()
+
+            print('completion', completion)
+            
+            # Create the response body in the required format
+            response_data = {
+                "sessionState": {
+                    "dialogAction": {
+                        "type": "ElicitIntent"
+                    },
+                    "intent": {
+                        "name": current_intent,
+                        "state": "Fulfilled"
+                    }
+                },
+                "messages": [
+                    {
+                        "contentType": "PlainText",
+                        "content": completion
+                    }
+                ]
+            }
+            print("response_data====>", response_data)
+            return response_data
+
+        except Exception as e:
+            return {
+                'statusCode': 500,
+                'body': json.dumps({
+                    'error': str(e)
+                })
+            }
