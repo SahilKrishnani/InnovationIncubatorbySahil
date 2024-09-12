@@ -1,0 +1,108 @@
+const AWS = require('aws-sdk');
+const connect = new AWS.Connect();
+const lambda = new AWS.Lambda();
+const crypto = require('crypto');
+
+function generateUUID() {
+    return crypto.randomUUID();
+}
+
+async function startOutboundCall(params, retries = 3) {
+    try {
+        return await connect.startOutboundVoiceContact(params).promise();
+    } catch (err) {
+        if (retries > 0 && err.retryable) {
+            const delay = Math.pow(2, 3 - retries) * 1000 + Math.random() * 1000; // Exponential backoff with jitter
+            console.log(`Retrying in ${delay}ms...`);
+            await new Promise(resolve => setTimeout(resolve, delay));
+            return startOutboundCall(params, retries - 1);
+        } else {
+            throw err;
+        }
+    }
+}
+
+async function invokeFirstLambda(sessionId, text) {
+    const params = {
+        FunctionName: 'amazon-connect-bedrock-connector-python', // Replace with your first Lambda function's name
+        InvocationType: 'RequestResponse', // Synchronous invocation
+        Payload: JSON.stringify({
+            session_id: sessionId,
+            text: text,
+            is_external : true
+        })
+    };
+
+    
+
+try {
+        const response = await lambda.invoke(params).promise();
+        const result = JSON.parse(response.Payload);
+        console.log('First Lambda response:', result);
+        return result;
+    } catch (err) {
+        console.error('Error invoking first Lambda:', err);
+        throw err;
+    }
+}
+
+exports.handler = async (event, context) => {
+    // Generate a session ID for this interaction
+    const sessionId = generateUUID();
+
+    // The text you want to pass to the first Lambda
+    const text = "Hi my name is Alex and i am having issues with my modem, respond by first introducing yourself i am mathew and i am calling from cdg and we have found that you are having problem with your modem and after that guide me to fix the problem step by step and make sure you interact in a humanly way";    // Replace with the actual text you need to give instruction to the agent
+
+    // First, invoke the first Lambda with the session ID and text
+    let firstLambdaResponse;
+    try {
+        firstLambdaResponse = await invokeFirstLambda(sessionId, text);
+    } catch (err) {
+        return {
+            statusCode: 500,
+            body: JSON.stringify({
+                error: 'Error invoking first Lambda',
+                details: err.message || "Unknown error"
+            })
+        };
+    }
+
+    // Use the response from the first Lambda to set the parameters for the outbound call
+    const params = {
+        ContactFlowId: "Give the required contact flow",
+        DestinationPhoneNumber: "replace with the customer phone number",
+        InstanceId: process.env.INSTANCE_ID || "replace with instance ID",
+        QueueId: process.env.QUEUE_ID || "replace with Queue ID",
+        Attributes: {
+            "context": firstLambdaResponse
+        },
+        
+      AnswerMachineDetectionConfig: {
+            EnableAnswerMachineDetection: true
+        },
+        ClientToken: context.awsRequestId,
+        TrafficType: "CAMPAIGN"
+    };
+
+    try {
+        const data = await startOutboundCall(params);
+        console.log('Outbound call initiated:', data);
+        return {
+            statusCode: 200,
+            body: JSON.stringify(data)
+        };
+    } catch (err) {
+        console.error('Error initiating outbound call:', err);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ 
+                error: err.message || "Unknown error", 
+                code: err.code, 
+                requestId: err.requestId,
+                statusCode: err.statusCode
+            })
+        };
+    }
+};
+
+
