@@ -1,0 +1,13 @@
+At the inception this function will create a unique session id The function “generateUUID” is used 
+to create a unique session ID for each interaction. This ID ensures that each outbound call session 
+is unique and traceable. 
+
+The “invokeFirstLambda” function calls another Lambda function, specified 
+by “Bedrock_Agent_Response”. This invoke Lambda function processes the provided text input, which 
+includes the script or instructions that act as an instruction to the agent about the purpose of 
+the call and to whom it is speaking, based on this instruction the agent will respond to the user 
+initially by introducing it’s purpose of call. 
+
+The startOutboundCall function is responsible for initiating the outbound call through AWS Connect 
+using the parameters set up from the first Lambda’s response. This function will take the customer 
+phone number and the connect flow id and initiate the call
