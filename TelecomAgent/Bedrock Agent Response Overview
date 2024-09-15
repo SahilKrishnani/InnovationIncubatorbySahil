@@ -1,0 +1,15 @@
+The function uses a global session_id variable to track the session across multiple interactions.
+If the event is marked as is_external, the session_id is taken directly from the event. This is useful 
+when the session is managed externally or passed from another service.If it's an internal event and no 
+session_id has been set, a new session ID is generated using uuid.uuid4() to ensure each interaction is 
+unique. The Bedrock client is initialized with the bedrock-agent-runtime service in the us-east-1 region. 
+This client is used to communicate with the Bedrock agent for processing the transcription and generating 
+responses. If the event is external (is_external is True), the function directly uses the provided text 
+in the event to invoke the Bedrock agent. The response from the agent is processed by decoding the response 
+chunks, which are concatenated to form the final output message. For internal events (is_external is False), 
+the function first attempts to extract the current intent from the event’s sessionState. If the intent is 
+unclear, it falls back to the first interpretation available in the event's interpretations list. The function 
+then identifies the best transcription from a list based on confidence scores. This transcription is used as 
+input for the Bedrock agent.The agent's response is processed similarly by decoding the chunks and forming 
+the final completion message.A structured response is returned, including the updated session state and the 
+generated message.
